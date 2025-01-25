@@ -9,7 +9,9 @@ extends CharacterBody3D
 @export var moveSpeed : Vector3
 
 @export var staminaCounter : float = 3
-@export var timerJustEnded : bool
+@export var timerJustEnded : bool = false
+@export var canCharge : bool = false
+@export var isSprinting : bool = false
 
 @export var normalSpeed : float = 10
 @export var flyingMultiplier : float = 1
@@ -24,6 +26,7 @@ var axisY : Vector3 = Vector3(0, 1, 0)
 @export var inputDir : Vector3
 
 func _ready() -> void:
+	
 	visual.transform.basis = Basis(axisY, rotDirRadians)
 	pass
 
@@ -46,19 +49,37 @@ func _physics_process(delta: float) -> void:
 	
 	move_and_slide()
 	
-	text.set_text((str(staminaCounter)) + " :: " + (str(staminaCooldown.time_left)) + " :: " + (str(flyingMultiplier)) + " :: " + states + " :: " + str(moveSpeed))
+	text.set_text(states + " :: :: " + (str(staminaCounter)) + " :: " + (str(staminaCooldown.time_left)) + " :: " + (str(flyingMultiplier)) + " :: " + " :: " + str(moveSpeed) + " :: " + str(isSprinting) + " :: " + "isSprinting")
 	
-	print(flyingMultiplier)
 	
 	pass
 func _stamina(delta: float) -> void:
-	if (Input.is_action_pressed("sprint")):
+	
+	if (Input.is_action_pressed("sprint")) && (staminaCounter > 0):
+		states = "sprinting"
+		isSprinting = true
 		staminaCounter = staminaCounter - 1 * delta
-	if staminaCounter >= 1:
+		print("Rest")
+	
+	if (Input.is_action_just_released("sprint")):
+		states = "sprinting not"
+		isSprinting = false
 		staminaCooldown.start()
+		print("Counter Begin")
+	
 	if timerJustEnded == true:
-		staminaCounter = staminaCounter + 1 * delta
+		if staminaCounter >= -0.02 && staminaCounter <= 3 && isSprinting == false:
+			staminaCounter = staminaCounter + 1 * delta
+			print("Recharge")
+	
+	if staminaCounter > 0 && staminaCounter <= 3 && isSprinting == false:
+		canCharge = true
+	
+	else:
+		canCharge = false
+
 	pass
 func _on_stamina_cooldown_timeout() -> void:
 	timerJustEnded = true
+	print("Counter Ended")
 	pass # Replace with function body.
