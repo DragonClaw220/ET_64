@@ -1,0 +1,79 @@
+[gd_scene load_steps=11 format=3 uid="uid://dtdmydveml1qo"]
+
+[ext_resource type="Script" path="res://Scripts/player_movement_script.gd" id="1_ip1ap"]
+[ext_resource type="Material" uid="uid://chdgdsbqlmth8" path="res://Materials/base_color.tres" id="2_ecwfm"]
+[ext_resource type="PackedScene" uid="uid://v0ersprcmesd" path="res://Models/Map_v1.blend" id="3_l5cyg"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_r67dt"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_vwkjv"]
+sky_material = SubResource("ProceduralSkyMaterial_r67dt")
+
+[sub_resource type="Environment" id="Environment_s7xkp"]
+background_mode = 2
+sky = SubResource("Sky_vwkjv")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_tdulj"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_uokpg"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_87tmh"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_e252a"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_s7xkp")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Ground" type="StaticBody3D" parent="."]
+visible = false
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+transform = Transform3D(15, 0, 0, 0, -6.55671e-07, 0.5, 0, -15, -2.18557e-08, 0, 0, 0)
+mesh = SubResource("QuadMesh_tdulj")
+
+[node name="Player" type="CharacterBody3D" parent="."]
+script = ExtResource("1_ip1ap")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.499998, -1.90735e-06)
+shape = SubResource("CylinderShape3D_uokpg")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player/CollisionShape3D"]
+material_override = ExtResource("2_ecwfm")
+mesh = SubResource("CylinderMesh_87tmh")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Player/CollisionShape3D"]
+transform = Transform3D(1, 0, 0, 0, 0.5, 0, 0, 0, 1, 0, 0.5, 0.5)
+material_override = ExtResource("2_ecwfm")
+mesh = SubResource("BoxMesh_e252a")
+
+[node name="StaminaCooldown" type="Timer" parent="Player"]
+wait_time = 2.0
+one_shot = true
+
+[node name="Label" type="Label" parent="Player"]
+modulate = Color(0, 0, 0, 1)
+offset_right = 675.0
+offset_bottom = 204.0
+text = "arroz"
+
+[node name="Map_v1" parent="." instance=ExtResource("3_l5cyg")]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 30, 30)
+current = true
+fov = 25.0
+size = 11.476
+
+[connection signal="timeout" from="Player/StaminaCooldown" to="Player" method="_on_stamina_cooldown_timeout"]
