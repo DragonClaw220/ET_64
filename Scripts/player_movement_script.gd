@@ -49,7 +49,7 @@ func _physics_process(delta: float) -> void:
 	
 	move_and_slide()
 	
-	text.set_text(states + " :: :: " + (str(staminaCounter)) + " :: " + (str(staminaCooldown.time_left)) + " :: " + (str(flyingMultiplier)) + " :: " + " :: " + str(moveSpeed) + " :: " + str(isSprinting) + " :: " + "isSprinting")
+	text.set_text(states + " :: :: " + (str(staminaCounter)) + " :: " + (str(staminaCooldown.time_left)) + " :: " + (str(flyingMultiplier)) + " :: " + " :: " + str(moveSpeed) + " :|: " + "isSprinting" + " :: " + str(isSprinting) + " :|: " + "canCharge" + " :: " + str(canCharge) + " :|: " + str(timerJustEnded))
 	
 	
 	pass
@@ -68,12 +68,15 @@ func _stamina(delta: float) -> void:
 		print("Counter Begin")
 	
 	if timerJustEnded == true:
-		if staminaCounter >= -0.02 && staminaCounter <= 3 && isSprinting == false:
+		if staminaCounter >= -0.02 && staminaCounter <= 3.2 && isSprinting == false:
 			staminaCounter = staminaCounter + 1 * delta
-			print("Recharge")
+			#print("Recharge")
 	
 	if staminaCounter > 0 && staminaCounter <= 3 && isSprinting == false:
 		canCharge = true
+		
+	if staminaCooldown.time_left != 0:
+		timerJustEnded = false
 	
 	else:
 		canCharge = false
