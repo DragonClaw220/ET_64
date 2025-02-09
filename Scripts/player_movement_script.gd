@@ -3,10 +3,12 @@ extends CharacterBody3D
 @onready var visual = $CollisionShape3D
 @onready var staminaCooldown = $"StaminaCooldown"
 @onready var text = $Label
+@onready var text2 = $Label2
 
 @export var states : String = "resting"
 
 @export var moveSpeed : Vector3
+@export var currentSpeed : Vector3
 
 @export var staminaCounter : float = 3
 @export var timerJustEnded : bool = false
@@ -37,20 +39,24 @@ func _physics_process(delta: float) -> void:
 	inputMovement = Vector2(Input.get_axis("move_left", "move_right"), Input.get_axis("move_up", "move_down")).normalized()
 	
 	inputDir = Vector3(inputMovement.x, 0, inputMovement.y)
+	
 	moveSpeed = inputDir.normalized() * normalSpeed * flyingMultiplier
 	
+	if currentSpeed != moveSpeed:
+		currentSpeed = lerp(currentSpeed, moveSpeed, 0.2)
+		pass
 	
 	if inputMovement != Vector2(0, 0):
 		rotDirRadians = atan2(inputMovement.x, inputMovement.y)
 		rotDir = rad_to_deg(rotDirRadians)
 		visual.transform.basis = lerp(visual.transform.basis, Basis(axisY, rotDirRadians), 0.15)
 	
-	velocity = moveSpeed
+	velocity = currentSpeed
 	
 	move_and_slide()
 	
 	text.set_text(states + " :: :: " + (str(staminaCounter)) + " :: " + (str(staminaCooldown.time_left)) + " :: " + (str(flyingMultiplier)) + " :: " + " :: " + str(moveSpeed) + " :|: " + "isSprinting" + " :: " + str(isSprinting) + " :|: " + "canCharge" + " :: " + str(canCharge) + " :|: " + str(timerJustEnded))
-	
+	text2.text = str(currentSpeed)
 	
 	pass
 func _stamina(delta: float) -> void:

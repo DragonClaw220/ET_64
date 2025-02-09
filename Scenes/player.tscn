@@ -1,0 +1,46 @@
+[gd_scene load_steps=6 format=3 uid="uid://cjhdw834up25y"]
+
+[ext_resource type="Script" path="res://Scripts/player_movement_script.gd" id="1_rslbx"]
+[ext_resource type="Material" uid="uid://chdgdsbqlmth8" path="res://Materials/base_color.tres" id="2_23455"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_uokpg"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_87tmh"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_e252a"]
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_rslbx")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.499998, -1.90735e-06)
+shape = SubResource("CylinderShape3D_uokpg")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D"]
+material_override = ExtResource("2_23455")
+mesh = SubResource("CylinderMesh_87tmh")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="CollisionShape3D"]
+transform = Transform3D(1, 0, 0, 0, 0.5, 0, 0, 0, 1, 0, 0.5, 0.5)
+material_override = ExtResource("2_23455")
+mesh = SubResource("BoxMesh_e252a")
+
+[node name="StaminaCooldown" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="Label" type="Label" parent="."]
+modulate = Color(0, 0, 0, 1)
+offset_right = 675.0
+offset_bottom = 24.0
+text = "arroz"
+
+[node name="Label2" type="Label" parent="."]
+modulate = Color(0, 0, 0, 1)
+offset_top = 31.0
+offset_right = 675.0
+offset_bottom = 55.0
+text = "arroz"
+
+[connection signal="timeout" from="StaminaCooldown" to="." method="_on_stamina_cooldown_timeout"]
