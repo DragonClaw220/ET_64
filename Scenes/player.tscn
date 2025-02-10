@@ -13,7 +13,7 @@
 script = ExtResource("1_rslbx")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.499998, -1.90735e-06)
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0.5, 0)
 shape = SubResource("CylinderShape3D_uokpg")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D"]
@@ -43,4 +43,14 @@ offset_right = 675.0
 offset_bottom = 55.0
 text = "arroz"
 
+[node name="Label3" type="Label" parent="."]
+modulate = Color(0, 0, 0, 1)
+offset_top = 65.0
+offset_right = 675.0
+offset_bottom = 89.0
+text = "arroz"
+
+[connection signal="noStamina" from="." to="." method="_on_no_stamina"]
+[connection signal="staminaRecharge" from="." to="." method="_on_stamina_recharge"]
+[connection signal="staminaValues" from="." to="." method="_on_stamina_values"]
 [connection signal="timeout" from="StaminaCooldown" to="." method="_on_stamina_cooldown_timeout"]
