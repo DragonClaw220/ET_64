@@ -1,34 +1,40 @@
 [gd_scene load_steps=6 format=3 uid="uid://cjhdw834up25y"]
 
-[ext_resource type="Script" path="res://Scripts/player_movement_script.gd" id="1_rslbx"]
+[ext_resource type="Script" uid="uid://cxe5ybhlhnook" path="res://Scripts/player_movement_script.gd" id="1_rslbx"]
 [ext_resource type="Material" uid="uid://chdgdsbqlmth8" path="res://Materials/base_color.tres" id="2_23455"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_uokpg"]
+height = 1.0
+radius = 0.251465
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_87tmh"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_e252a"]
 
 [node name="Player" type="CharacterBody3D"]
+collision_layer = 3
+collision_mask = 3
 script = ExtResource("1_rslbx")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.500188, 0)
 shape = SubResource("CylinderShape3D_uokpg")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 material_override = ExtResource("2_23455")
 mesh = SubResource("CylinderMesh_87tmh")
 skeleton = NodePath("../..")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="CollisionShape3D"]
-transform = Transform3D(1, 0, 0, 0, 0.5, 0, 0, 0, 1, 0, 0.5, 0.5)
+transform = Transform3D(0.5, 0, 0, 0, 0.25, 0, 0, 0, 0.5, 0, 0.25, 0.25)
 material_override = ExtResource("2_23455")
 mesh = SubResource("BoxMesh_e252a")
 
 [node name="StaminaCooldown" type="Timer" parent="."]
 wait_time = 2.0
 one_shot = true
+ignore_time_scale = true
 
 [node name="Label" type="Label" parent="."]
 modulate = Color(0, 0, 0, 1)

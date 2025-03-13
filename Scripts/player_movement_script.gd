@@ -46,7 +46,7 @@ var desiredAngle : float
 
 func _ready() -> void:
 	
-	visual.transform.basis = Basis(axisY, rotDirRadians)
+	#visual.transform.basis = Basis(axisY, rotDirRadians)
 	pass
 
 func _physics_process(delta: float) -> void:

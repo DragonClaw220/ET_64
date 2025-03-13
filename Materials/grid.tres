@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://d23tfjs54xdnt"]
+
+[ext_resource type="Texture2D" uid="uid://dic5r6r5ijit4" path="res://Texturas/Grid128.png" id="1_s1wrh"]
+
+[resource]
+albedo_texture = ExtResource("1_s1wrh")
+uv1_scale = Vector3(45, 45, 45)
+texture_filter = 0
